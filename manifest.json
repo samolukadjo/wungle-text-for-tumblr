@@ -24,7 +24,7 @@
     "default_popup": "browserAction/index.html",
     "default_title": "Wungle Text for Tumblr"
   },
-  "options_ui": {
-    "page": "options/index.html"
-  }
+  "permissions": [
+    
+  ]
 }
