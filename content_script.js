@@ -1,4 +1,34 @@
 // Put all the javascript code here, that you want to execute after page load.
+// Define the functionality needed to compare arrays
+// Warn if overriding existing method
+if (Array.prototype.equals)
+  console.warn(
+    "Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code."
+  );
+// attach the .equals method to Array's prototype to call it on any array
+Array.prototype.equals = function (array) {
+  // if the other array is a falsy value, return
+  if (!array) return false;
+  // if the argument is the same array, we can be sure the contents are same as well
+  if (array === this) return true;
+  // compare lengths - can save a lot of time
+  if (this.length != array.length) return false;
+
+  for (var i = 0, l = this.length; i < l; i++) {
+    // Check if we have nested arrays
+    if (this[i] instanceof Array && array[i] instanceof Array) {
+      // recurse into the nested arrays
+      if (!this[i].equals(array[i])) return false;
+    } else if (this[i] != array[i]) {
+      // Warning - two different object instances will never be equal: {x:20} != {x:20}
+      return false;
+    }
+  }
+  return true;
+};
+// Hide method from for-in loops
+Object.defineProperty(Array.prototype, "equals", { enumerable: false });
+
 let postsThatWereAlreadyProcessed = [];
 
 init();
@@ -25,16 +55,21 @@ function runOnLoaded(callback) {
 }
 
 // This function returns an array of all the posts on the page at the time of the call
-function detectPosts() {
-  const posts = document.querySelectorAll(".zAlrA article");
+function detectPosts(containerOfPostsToProccess) {
+  const posts = containerOfPostsToProccess.querySelectorAll(".zAlrA article");
 
-  console.log("[Wungle Text]:", posts);
+  console.log("[Wungle Text]: Posts detected ", posts);
 
   return Array.from(posts);
 }
 
 function proccessPost(postToProccess) {
   console.log("[Wungle Text]: Processing post ", postToProccess);
+  const header = postToProccess.querySelector("header");
+  header.innerHTML += `<button class="wungle-text-button" style="margin-left: 0.2rem; border: 1px solid black; height: 1.5rem; padding: 0.5rem; border-radius: 0.5rem; min-width: 7rem;">Wungle Text</button>`;
+  header.querySelector(".wungle-text-button").addEventListener("click", () => {
+    alert("You clicked the button!");
+  });
 }
 
 function proccessPostsContinuously() {
@@ -42,15 +77,27 @@ function proccessPostsContinuously() {
   let postsContainers = Array.from(document.querySelectorAll(".zAlrA"));
   const postsContainer = postsContainers[0];
 
+  console.log("[Wungle Text]: Posts containers detected ", postsContainers);
+  console.log("[Wungle Text]: First posts container ", postsContainer);
+
+  let firstPosts = detectPosts(postsContainer);
+
+  for (let i = 0; i < firstPosts.length; i++) {
+    proccessPost(firstPosts[i]);
+  }
+
+  postsThatWereAlreadyProcessed =
+    postsThatWereAlreadyProcessed.concat(firstPosts);
+
   // Options for the observer (which mutations to observe)
-  const config = { attributes: false, childList: true, subtree: false };
+  const config = { attributes: false, childList: true, subtree: true };
 
   // Callback function to execute when mutations are observed
   const callback = (mutationList, observer) => {
     for (const mutation of mutationList) {
       if (mutation.type === "childList") {
-        console.log("New posts have been loaded.");
-        let currentPosts = detectPosts();
+        console.log("A posts feed has changed.", mutation);
+        let currentPosts = detectPosts(mutation.target);
 
         const difference = currentPosts.filter(
           (element) => !postsThatWereAlreadyProcessed.includes(element)
@@ -68,28 +115,7 @@ function proccessPostsContinuously() {
     }
 
     // This doesnt work yet, it thinks the feeds its already detected are new
-    // checkForNewPostFeedsAndObserveThem();
-
-    function checkForNewPostFeedsAndObserveThem() {
-      if (Array.from(document.querySelectorAll(".zAlrA")) !== postsContainers) {
-        console.log("[Wungle Text]: New feed of posts detected.", "Old posts feeds list: ", postsContainers, "New posts feeds list: ", Array.from(document.querySelectorAll(".zAlrA")));
-
-        const difference = Array.from(
-          document.querySelectorAll(".zAlrA")
-        ).filter((element) => !postsContainers.includes(element));
-
-        for (let i = 0; i < difference.length; i++) {
-            observer.observe(difference[i], config);
-        }
-
-        postsContainers = postsContainers.concat(difference);
-
-        setTimeout(checkForNewPostFeedsAndObserveThem, 1000);
-      } else {
-        console.log("[Wungle Text]: No new feed of posts detected.");
-        setTimeout(checkForNewPostFeedsAndObserveThem, 1000);
-      }
-    }
+    
   };
 
   // Create an observer instance linked to the callback function
@@ -100,4 +126,36 @@ function proccessPostsContinuously() {
 
   // Later, you can stop observing
   // observer.disconnect();
+
+  checkForNewPostFeedsAndObserveThem();
+
+    function checkForNewPostFeedsAndObserveThem() {
+      const currentPostsContainers = Array.from(
+        document.querySelectorAll(".zAlrA")
+      );
+      if (!currentPostsContainers.equals(postsContainers)) {
+        console.log(
+          "[Wungle Text]: New feed of posts detected.",
+          "Old posts feeds list: ",
+          postsContainers,
+          "New posts feeds list: ",
+          currentPostsContainers
+        );
+
+        const difference = currentPostsContainers.filter(
+          (element) => !postsContainers.includes(element)
+        );
+
+        for (let i = 0; i < difference.length; i++) {
+          observer.observe(difference[i], config);
+        }
+
+        postsContainers = postsContainers.concat(difference);
+
+        setTimeout(checkForNewPostFeedsAndObserveThem, 1000);
+      } else {
+        console.log("[Wungle Text]: No new feed of posts detected.");
+        setTimeout(checkForNewPostFeedsAndObserveThem, 1000);
+      }
+    }
 }
