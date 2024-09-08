@@ -1,9 +1,14 @@
+const development = true;
+
 // Define the functionality needed to compare arrays
 // Warn if overriding existing method
-if (Array.prototype.equals)
-  console.warn(
-    "Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code."
-  );
+if (Array.prototype.equals) {
+  if (development) {
+    console.warn(
+      "[Wungle Text]: Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code."
+    );
+  }
+}
 // attach the .equals method to Array's prototype to call it on any array
 Array.prototype.equals = function (array) {
   // if the other array is a falsy value, return
@@ -33,9 +38,11 @@ let postsThatWereAlreadyProcessed = [];
 // The function that runs when the page is loaded
 init();
 function init() {
-  console.log(
-    "[Wungle Text]: Hello from the content_script.js of the Wungle text extension!"
-  );
+  if (development) {
+    console.log(
+      "[Wungle Text]: Hello from the content_script.js of the Wungle text extension!"
+    );
+  }
 
   runOnLoaded(proccessPostsContinuously());
 }
@@ -58,13 +65,15 @@ function runOnLoaded(callback) {
 function detectPosts(containerOfPostsToProccess) {
   const posts = containerOfPostsToProccess.querySelectorAll(".zAlrA article");
 
-  console.log("[Wungle Text]: Posts detected ", posts);
+  if (development) {
+    console.log("[Wungle Text]: Posts detected ", posts);
+  }
 
   return Array.from(posts);
 }
 
 // This function proccesses a single post by adding to it the functionalitty needed to see the wungle text
-// It also adds a button and attaches an event listener to the button which executes a function 
+// It also adds a button and attaches an event listener to the button which executes a function
 //that curentlly shows an alert but which will find and show the wungle text
 function proccessPost(postToProccess) {
   console.log("[Wungle Text]: Processing post ", postToProccess);
@@ -75,7 +84,7 @@ function proccessPost(postToProccess) {
   });
 }
 
-// This function checks for new posts and proccesses them, 
+// This function checks for new posts and proccesses them,
 //it also checks for new posts containers and proccesses posts within those as well
 // This may need to be broken up into multiple functions
 function proccessPostsContinuously() {
@@ -83,8 +92,10 @@ function proccessPostsContinuously() {
   let postsContainers = Array.from(document.querySelectorAll(".zAlrA"));
   const postsContainer = postsContainers[0];
 
-  console.log("[Wungle Text]: Posts containers detected ", postsContainers);
-  console.log("[Wungle Text]: First posts container ", postsContainer);
+  if (development) {
+    console.log("[Wungle Text]: Posts containers detected ", postsContainers);
+    console.log("[Wungle Text]: First posts container ", postsContainer);
+  }
 
   let firstPosts = detectPosts(postsContainer);
 
@@ -109,7 +120,9 @@ function proccessPostsContinuously() {
           (element) => !postsThatWereAlreadyProcessed.includes(element)
         );
 
-        console.log("[Wungle Text]: The diferences are ", difference);
+        if (development) {
+          console.log("[Wungle Text]: The diferences are ", difference);
+        }
 
         for (let i = 0; i < difference.length; i++) {
           proccessPost(difference[i]);
@@ -121,7 +134,6 @@ function proccessPostsContinuously() {
     }
 
     // This doesnt work yet, it thinks the feeds its already detected are new
-    
   };
 
   // Create an observer instance linked to the callback function
@@ -133,15 +145,15 @@ function proccessPostsContinuously() {
   // Later, you can stop observing
   // observer.disconnect();
 
-
   // This function checks for new posts feeds and starts proccessesing on their posts as well
   checkForNewPostFeedsAndObserveThem();
 
-    function checkForNewPostFeedsAndObserveThem() {
-      const currentPostsContainers = Array.from(
-        document.querySelectorAll(".zAlrA")
-      );
-      if (!currentPostsContainers.equals(postsContainers)) {
+  function checkForNewPostFeedsAndObserveThem() {
+    const currentPostsContainers = Array.from(
+      document.querySelectorAll(".zAlrA")
+    );
+    if (!currentPostsContainers.equals(postsContainers)) {
+      if (development) {
         console.log(
           "[Wungle Text]: New feed of posts detected.",
           "Old posts feeds list: ",
@@ -149,21 +161,24 @@ function proccessPostsContinuously() {
           "New posts feeds list: ",
           currentPostsContainers
         );
-
-        const difference = currentPostsContainers.filter(
-          (element) => !postsContainers.includes(element)
-        );
-
-        for (let i = 0; i < difference.length; i++) {
-          observer.observe(difference[i], config);
-        }
-
-        postsContainers = postsContainers.concat(difference);
-
-        setTimeout(checkForNewPostFeedsAndObserveThem, 1000);
-      } else {
-        console.log("[Wungle Text]: No new feed of posts detected.");
-        setTimeout(checkForNewPostFeedsAndObserveThem, 1000);
       }
+
+      const difference = currentPostsContainers.filter(
+        (element) => !postsContainers.includes(element)
+      );
+
+      for (let i = 0; i < difference.length; i++) {
+        observer.observe(difference[i], config);
+      }
+
+      postsContainers = postsContainers.concat(difference);
+
+      setTimeout(checkForNewPostFeedsAndObserveThem, 1000);
+    } else {
+      if (development) {
+        console.log("[Wungle Text]: No new feed of posts detected.");
+      }
+      setTimeout(checkForNewPostFeedsAndObserveThem, 1000);
     }
+  }
 }
