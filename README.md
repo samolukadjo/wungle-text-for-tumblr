@@ -14,4 +14,4 @@ Currently the idea is to use 3y3.js to embed the wungle text into the post itsel
 
 ## Contribution
 
-If you have aby problems or suggestions please create an issue and if you have any improvements to the code fork this repo and make a pull request once coded.
+If you have aby problems or suggestions please create an issue and if you have any improvements to the code fork this repo and make a pull request.
