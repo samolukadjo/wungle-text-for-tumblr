@@ -15,6 +15,9 @@ body {
 main {
     max-width: 800px;
     margin: 0 auto;
+    min-height: 78vh;
+    display: flex;
+    flex-direction: column;
 }
 
 h1,
