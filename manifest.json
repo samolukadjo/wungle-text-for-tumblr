@@ -12,6 +12,7 @@
         "*://*.tumblr.com/*"
       ],
       "js": [
+        "3y3/3y3.js",
         "content_script.js"
       ]
     }
