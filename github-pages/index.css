@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
+    background-color: #222;
+    color: #ddd;
+    padding: 2em;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1,
+p {
+    margin-bottom: 1em;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+footer {
+    margin-top: 2em;
+    text-align: center;
+    color: #666;
+}
+
+a {
+    color: #66f;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
