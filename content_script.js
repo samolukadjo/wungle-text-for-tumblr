@@ -1,4 +1,3 @@
-// Put all the javascript code here, that you want to execute after page load.
 // Define the functionality needed to compare arrays
 // Warn if overriding existing method
 if (Array.prototype.equals)
@@ -31,6 +30,7 @@ Object.defineProperty(Array.prototype, "equals", { enumerable: false });
 
 let postsThatWereAlreadyProcessed = [];
 
+// The function that runs when the page is loaded
 init();
 function init() {
   console.log(
@@ -40,7 +40,7 @@ function init() {
   runOnLoaded(proccessPostsContinuously());
 }
 
-// This function runs whatever code is in the callback function once the page is loaded
+// This function runs the callback function once the page is loaded
 function runOnLoaded(callback) {
   if (document.readyState == "complete") {
     return callback();
@@ -54,7 +54,7 @@ function runOnLoaded(callback) {
   }
 }
 
-// This function returns an array of all the posts on the page at the time of the call
+// This function returns an array of all the posts in the supplied post container at the time of the call
 function detectPosts(containerOfPostsToProccess) {
   const posts = containerOfPostsToProccess.querySelectorAll(".zAlrA article");
 
@@ -63,6 +63,9 @@ function detectPosts(containerOfPostsToProccess) {
   return Array.from(posts);
 }
 
+// This function proccesses a single post by adding to it the functionalitty needed to see the wungle text
+// It also adds a button and attaches an event listener to the button which executes a function 
+//that curentlly shows an alert but which will find and show the wungle text
 function proccessPost(postToProccess) {
   console.log("[Wungle Text]: Processing post ", postToProccess);
   const header = postToProccess.querySelector("header");
@@ -72,6 +75,9 @@ function proccessPost(postToProccess) {
   });
 }
 
+// This function checks for new posts and proccesses them, 
+//it also checks for new posts containers and proccesses posts within those as well
+// This may need to be broken up into multiple functions
 function proccessPostsContinuously() {
   // Select the node that will be observed for mutations
   let postsContainers = Array.from(document.querySelectorAll(".zAlrA"));
@@ -127,6 +133,8 @@ function proccessPostsContinuously() {
   // Later, you can stop observing
   // observer.disconnect();
 
+
+  // This function checks for new posts feeds and starts proccessesing on their posts as well
   checkForNewPostFeedsAndObserveThem();
 
     function checkForNewPostFeedsAndObserveThem() {
