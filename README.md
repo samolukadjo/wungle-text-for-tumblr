@@ -4,6 +4,10 @@ This will hopefully one day be an extension that replicates [this](https://www.t
 
 Currently its a big ol' pile of nothin'. But I hope to make it something.
 
+## Installation
+
+This extension is still unusable so no realeses exist yet. If you want to try it, clone the repo and load temporary addon/plugin in your browser.
+
 ## Implementation
 
 Currently the idea is to use 3y3.js to embed the wungle text into the post itself thus eliminating the need for a database or other online service.
