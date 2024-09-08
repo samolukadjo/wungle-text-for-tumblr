@@ -43,3 +43,11 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.install-on {
+    margin: 1rem;
+}
+
+.install-on img {
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+}
