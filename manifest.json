@@ -26,6 +26,6 @@
     "default_title": "Wungle Text for Tumblr"
   },
   "permissions": [
-    
+    "clipboardWrite"
   ]
 }

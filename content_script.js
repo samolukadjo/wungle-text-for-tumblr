@@ -1,5 +1,7 @@
 const development = true;
 
+console.log("Wungle text here:", encode("Hello World {wungle text ends here}"));
+
 // Define the functionality needed to compare arrays
 // Warn if overriding existing method
 if (Array.prototype.equals) {
@@ -80,10 +82,60 @@ function proccessPost(postToProccess) {
   if (development) {
     console.log("[Wungle Text]: Processing post ", postToProccess);
   }
+
   const header = postToProccess.querySelector("header");
+  const postContentFields = postToProccess.querySelectorAll(".GzjsW");
+  const lastPostContentField = postContentFields[postContentFields.length - 1];
+
+  console.log("[Wungle Text]: Last post content field ", lastPostContentField);
+
   header.innerHTML += `<button class="wungle-text-button" style="margin-left: 0.2rem; border: 1px solid black; height: 1.5rem; padding: 0.5rem; border-radius: 0.5rem; min-width: 7rem;">Wungle Text</button>`;
   header.querySelector(".wungle-text-button").addEventListener("click", () => {
-    alert("You clicked the button!");
+    lastPostContentField.querySelectorAll("p").forEach((p) => {
+      if (development) {
+        console.log("[Wungle Text]: Processing paragraph ", p);
+      }
+
+      let theTextInTheParagraph = p.textContent;
+
+      if (development) {
+        console.log(
+          "[Wungle Text]: The text in the paragraph ",
+          theTextInTheParagraph
+        );
+      }
+
+      const containsWungleText = detect(theTextInTheParagraph);
+
+      if (containsWungleText) {
+        let decodedText = decode(theTextInTheParagraph);
+
+        if (development) {
+          console.log(
+            "[Wungle Text]: The decoded text in the paragraph ",
+            decodedText
+          );
+        }
+
+        const regex = /{wungle text ends here}/;
+        const match = regex.exec(decodedText);
+
+        if (match) {
+          decodedText = decodedText.slice(0, match.index);
+        }
+
+        p.textContent = `${decodedText}`;
+      } else {
+        p.textContent = ``
+      }
+
+      console.log(
+        "[Wungle Text]: Does the text '",
+        theTextInTheParagraph,
+        "' contain wungle text?",
+        containsWungleText
+      );
+    });
   });
 }
 
