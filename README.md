@@ -6,7 +6,7 @@ Its still in the earliest of stages.
 
 ## Installation
 
-This extension is still unusable so no realeses exist yet. If you want to try it, clone the repo and load temporary addon/plugin in your browser.
+This extension is still in development so no realeses exist yet. If you want to try it, clone the repo and load temporary addon/plugin in your browser.
 
 ## Implementation
 
