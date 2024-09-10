@@ -1,4 +1,4 @@
-const development = false;
+const development = true;
 
 // Define the functionality needed to compare arrays
 // Warn if overriding existing method
