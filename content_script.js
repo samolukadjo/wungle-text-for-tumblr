@@ -33,11 +33,12 @@ Array.prototype.equals = function (array) {
 // Hide method from for-in loops
 Object.defineProperty(Array.prototype, "equals", { enumerable: false });
 
+// A global scope variable to keep track of the posts that were already proccessed
 let postsThatWereAlreadyProcessed = [];
 
 // The function that runs when the page is loaded
-init();
-function init() {
+main();
+function main() {
   if (development) {
     console.log(
       "[Wungle Text]: Hello from the content_script.js of the Wungle text extension!"
@@ -76,7 +77,9 @@ function detectPosts(containerOfPostsToProccess) {
 // It also adds a button and attaches an event listener to the button which executes a function
 //that curentlly shows an alert but which will find and show the wungle text
 function proccessPost(postToProccess) {
-  console.log("[Wungle Text]: Processing post ", postToProccess);
+  if (development) {
+    console.log("[Wungle Text]: Processing post ", postToProccess);
+  }
   const header = postToProccess.querySelector("header");
   header.innerHTML += `<button class="wungle-text-button" style="margin-left: 0.2rem; border: 1px solid black; height: 1.5rem; padding: 0.5rem; border-radius: 0.5rem; min-width: 7rem;">Wungle Text</button>`;
   header.querySelector(".wungle-text-button").addEventListener("click", () => {
@@ -113,7 +116,9 @@ function proccessPostsContinuously() {
   const callback = (mutationList, observer) => {
     for (const mutation of mutationList) {
       if (mutation.type === "childList") {
-        console.log("A posts feed has changed.", mutation);
+        if (development) {
+          console.log("A posts feed has changed.", mutation);
+        }
         let currentPosts = detectPosts(mutation.target);
 
         const difference = currentPosts.filter(
