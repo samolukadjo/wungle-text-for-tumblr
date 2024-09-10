@@ -10,7 +10,7 @@ This extension is still in development so no realeses exist yet. If you want to 
 
 ## Implementation
 
-Currently the idea is to use 3y3.js to embed the wungle text into the post itself thus eliminating the need for a database or other online service.
+A proof of concept finally exists, using 3y3 it allows you to encode text that when added to the start of a paragraph in a tumblr post allows it to be read as wungle text.
 
 ## Contribution
 
