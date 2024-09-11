@@ -126,7 +126,7 @@ function proccessPost(postToProccess) {
 
         p.textContent = `${decodedText}`;
       } else {
-        p.textContent = ``
+        p.textContent = ``;
       }
 
       console.log(
@@ -139,103 +139,27 @@ function proccessPost(postToProccess) {
   });
 }
 
-// This function checks for new posts and proccesses them,
-//it also checks for new posts containers and proccesses posts within those as well
-// This may need to be broken up into multiple functions
+// Rewrite of the proccessPostsContinuously function
 function proccessPostsContinuously() {
-  // Select the node that will be observed for mutations
-  let postsContainers = Array.from(document.querySelectorAll(".zAlrA"));
-  const postsContainer = postsContainers[0];
+  const posts = Array.from(document.querySelectorAll(".zAlrA article"));
 
   if (development) {
-    console.log("[Wungle Text]: Posts containers detected ", postsContainers);
-    console.log("[Wungle Text]: First posts container ", postsContainer);
+    console.log("[Wungle Text]: Posts detected ", posts);
   }
 
-  let firstPosts = detectPosts(postsContainer);
-
-  for (let i = 0; i < firstPosts.length; i++) {
-    proccessPost(firstPosts[i]);
-  }
-
-  postsThatWereAlreadyProcessed =
-    postsThatWereAlreadyProcessed.concat(firstPosts);
-
-  // Options for the observer (which mutations to observe)
-  const config = { attributes: false, childList: true, subtree: true };
-
-  // Callback function to execute when mutations are observed
-  const callback = (mutationList, observer) => {
-    for (const mutation of mutationList) {
-      if (mutation.type === "childList") {
-        if (development) {
-          console.log("A posts feed has changed.", mutation);
-        }
-        let currentPosts = detectPosts(mutation.target);
-
-        const difference = currentPosts.filter(
-          (element) => !postsThatWereAlreadyProcessed.includes(element)
-        );
-
-        if (development) {
-          console.log("[Wungle Text]: The diferences are ", difference);
-        }
-
-        for (let i = 0; i < difference.length; i++) {
-          proccessPost(difference[i]);
-        }
-
-        postsThatWereAlreadyProcessed =
-          postsThatWereAlreadyProcessed.concat(difference);
-      }
-    }
-
-    // This doesnt work yet, it thinks the feeds its already detected are new
-  };
-
-  // Create an observer instance linked to the callback function
-  const observer = new MutationObserver(callback);
-
-  // Start observing the target node for configured mutations
-  observer.observe(postsContainer, config);
-
-  // Later, you can stop observing
-  // observer.disconnect();
-
-  // This function checks for new posts feeds and starts proccessesing on their posts as well
-  checkForNewPostFeedsAndObserveThem();
-
-  function checkForNewPostFeedsAndObserveThem() {
-    const currentPostsContainers = Array.from(
-      document.querySelectorAll(".zAlrA")
-    );
-    if (!currentPostsContainers.equals(postsContainers)) {
-      if (development) {
-        console.log(
-          "[Wungle Text]: New feed of posts detected.",
-          "Old posts feeds list: ",
-          postsContainers,
-          "New posts feeds list: ",
-          currentPostsContainers
-        );
-      }
-
-      const difference = currentPostsContainers.filter(
-        (element) => !postsContainers.includes(element)
+  for (let i = 0; i < posts.length; i++) {
+    if (development) {
+      console.log("[Wungle Text]: Processing post ", posts[i]);
+      console.log(
+        "[Wungle Text]: Is post already processed ",
+        postsThatWereAlreadyProcessed.includes(posts[i])
       );
-
-      for (let i = 0; i < difference.length; i++) {
-        observer.observe(difference[i], config);
-      }
-
-      postsContainers = postsContainers.concat(difference);
-
-      setTimeout(checkForNewPostFeedsAndObserveThem, 1000);
-    } else {
-      if (development) {
-        console.log("[Wungle Text]: No new feed of posts detected.");
-      }
-      setTimeout(checkForNewPostFeedsAndObserveThem, 1000);
+    }
+    if (!postsThatWereAlreadyProcessed.includes(posts[i])) {
+      proccessPost(posts[i]);
+      postsThatWereAlreadyProcessed.push(posts[i]);
     }
   }
+
+  setTimeout(proccessPostsContinuously, 1000);
 }
