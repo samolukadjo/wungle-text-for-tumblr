@@ -89,7 +89,7 @@ function proccessPost(postToProccess) {
 
   console.log("[Wungle Text]: Last post content field ", lastPostContentField);
 
-  header.innerHTML += `<button class="wungle-text-button" style="margin-left: 0.2rem; border: 1px solid black; height: 1.5rem; padding: 0.5rem; border-radius: 0.5rem; min-width: 7rem;">Wungle Text</button>`;
+  header.innerHTML += `<button class="wungle-text-button" style="margin-left: 0.2rem; border: 1px solid ${window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "white" : "black"}; height: 1.5rem; padding: 0.5rem; border-radius: 0.5rem; min-width: 7rem; background-color: ${window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "#333" : "white"}; color: ${window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "white" : "black"};">Wungle Text</button>`;
   header.querySelector(".wungle-text-button").addEventListener("click", () => {
     lastPostContentField.querySelectorAll("p").forEach((p) => {
       if (development) {
