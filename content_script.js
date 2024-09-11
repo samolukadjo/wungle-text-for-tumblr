@@ -139,7 +139,7 @@ function proccessPost(postToProccess) {
   });
 }
 
-// Rewrite of the proccessPostsContinuously function
+// Check for new posts every certain time interval and proccess them
 function proccessPostsContinuously() {
   const posts = Array.from(document.querySelectorAll(".zAlrA article"));
 
