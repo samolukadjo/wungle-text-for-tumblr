@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Wungle Text for Tumblr",
   "description": "This extension allows the user to view and edit the wungle text on Tumblr posts.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "icons": {
     "64": "icons/icon.png"
   },
