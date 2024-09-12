@@ -100,55 +100,95 @@ function proccessPost(postToProccess) {
       : "black"
   };">Wungle Text</button>`;
 
-  header.querySelector(".wungle-text-button").addEventListener("click", function whenWungleTextButtonIsClicked() {
-    lastPostContentField.querySelectorAll("p").forEach((p) => {
-      if (development) {
-        console.log("[Wungle Text]: Processing paragraph ", p);
-      }
+  header
+    .querySelector(".wungle-text-button")
+    .addEventListener("click", function whenWungleTextButtonIsClicked() {
+      lastPostContentField.querySelectorAll("p").forEach((p) => {
+        if (development) {
+          console.log("[Wungle Text]: Processing paragraph ", p);
+        }
 
-      let theTextInTheParagraph = p.textContent;
-
-      if (development) {
-        console.log(
-          "[Wungle Text]: The text in the paragraph ",
-          theTextInTheParagraph
-        );
-      }
-
-      const containsWungleText = detect(theTextInTheParagraph);
-
-      if (containsWungleText) {
-        let decodedText = decode(theTextInTheParagraph);
+        let theTextInTheParagraph = p.textContent;
 
         if (development) {
           console.log(
-            "[Wungle Text]: The decoded text in the paragraph ",
-            decodedText
+            "[Wungle Text]: The text in the paragraph ",
+            theTextInTheParagraph
           );
         }
 
-        const regex = /{wungle text ends here}/;
-        const match = regex.exec(decodedText);
+        const containsWungleText = detect(theTextInTheParagraph);
 
-        if (match) {
-          decodedText = decodedText.slice(0, match.index);
+        if (containsWungleText) {
+          let decodedText = decode(theTextInTheParagraph);
+
+          if (development) {
+            console.log(
+              "[Wungle Text]: The decoded text in the paragraph ",
+              decodedText
+            );
+          }
+
+          const regex = /{wungle text ends here}/;
+          const match = regex.exec(decodedText);
+
+          if (match) {
+            decodedText = decodedText.slice(0, match.index);
+          }
+
+          changeWungleTextButtonToShowOriginal();
+
+          p.textContent = `${decodedText}`;
+        } else {
+          changeWungleTextButtonToShowOriginal();
+
+          p.textContent = ``;
         }
 
-        header.querySelector(".wungle-text-button").removeEventListener("click", whenWungleTextButtonIsClicked)
+        function changeWungleTextButtonToShowOriginal() {
+          header
+            .querySelector(".wungle-text-button")
+            .removeEventListener("click", whenWungleTextButtonIsClicked);
 
-        p.textContent = `${decodedText}`;
-      } else {
-        p.textContent = ``;
-      }
+          header
+            .querySelector(".wungle-text-button")
+            .addEventListener(
+              "click",
+              function whenWungleTextButtonIsClickedAgain() {
+                if (development) {
+                  console.log(
+                    "[Wungle Text]: Wungle text button clicked again"
+                  );
+                }
 
-      console.log(
-        "[Wungle Text]: Does the text '",
-        theTextInTheParagraph,
-        "' contain wungle text?",
-        containsWungleText
-      );
+                p.textContent = theTextInTheParagraph;
+                header.querySelector(".wungle-text-button").textContent =
+                  "Wungle Text";
+
+                header
+                  .querySelector(".wungle-text-button")
+                  .removeEventListener(
+                    "click",
+                    whenWungleTextButtonIsClickedAgain
+                  );
+                header
+                  .querySelector(".wungle-text-button")
+                  .addEventListener("click", whenWungleTextButtonIsClicked);
+              }
+            );
+
+          header.querySelector(".wungle-text-button").textContent =
+            "Show Original";
+        }
+
+        console.log(
+          "[Wungle Text]: Does the text '",
+          theTextInTheParagraph,
+          "' contain wungle text?",
+          containsWungleText
+        );
+      });
     });
-  });
 }
 
 // Check for new posts every certain time interval and proccess them
