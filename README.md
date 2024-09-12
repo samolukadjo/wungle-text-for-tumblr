@@ -4,7 +4,7 @@ This will hopefully one day be an extension that replicates [this](https://www.t
 
 ## Installation
 
-This extension is available on the [Mozilla Add-on Store](https://addons.mozilla.org/en-US/firefox/addon/wungle-text-for-tumblr/) for both desktop and android firefox.
+This extension is available on the [Firefox Add-on Store](https://addons.mozilla.org/en-US/firefox/addon/wungle-text-for-tumblr/) for both desktop and android firefox.
 
 ## Implementation
 
