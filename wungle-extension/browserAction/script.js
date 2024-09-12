@@ -1,5 +1,3 @@
-/* import { encode } from "../3y3/3y3.js"; */
-
 const input = document.getElementById("wungleTextArea");
 const button = document.getElementById("wungleButton");
 const result = document.getElementById("wungleResult");
