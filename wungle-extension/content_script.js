@@ -64,17 +64,6 @@ function runOnLoaded(callback) {
   }
 }
 
-// This function returns an array of all the posts in the supplied post container at the time of the call
-function detectPosts(containerOfPostsToProccess) {
-  const posts = containerOfPostsToProccess.querySelectorAll(".zAlrA article");
-
-  if (development) {
-    console.log("[Wungle Text]: Posts detected ", posts);
-  }
-
-  return Array.from(posts);
-}
-
 // This function proccesses a single post by adding to it the functionalitty needed to see the wungle text
 // It also adds a button and attaches an event listener to the button which executes a function
 //that curentlly shows an alert but which will find and show the wungle text
