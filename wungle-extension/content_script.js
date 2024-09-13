@@ -88,7 +88,7 @@ function proccessPost(postToProccess) {
     window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "white"
       : "black"
-  }; height: 1.5rem; padding: 0.5rem; border-radius: 0.5rem; min-width: 7rem; background-color: ${
+  }; height: 4rem; padding: 0.1rem 0.5rem 0.1rem 0.5rem; border-radius: 0.5rem; min-width: 6rem; line-height: 1.2rem; white-space: normal; word-wrap: break-word; background-color: ${
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "#333"
