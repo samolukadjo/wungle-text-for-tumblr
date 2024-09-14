@@ -7,7 +7,7 @@ console.log("Wungle text here:", encode("Hello World {wungle text ends here}"));
 if (Array.prototype.equals) {
   if (development) {
     console.warn(
-      "[Wungle Text]: Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code."
+      "[Wungle Text]: Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.",
     );
   }
 }
@@ -43,7 +43,7 @@ main();
 function main() {
   if (development) {
     console.log(
-      "[Wungle Text]: Hello from the content_script.js of the Wungle text extension!"
+      "[Wungle Text]: Hello from the content_script.js of the Wungle text extension!",
     );
   }
 
@@ -79,7 +79,7 @@ function proccessPost(postToProccess) {
   if (development) {
     console.log(
       "[Wungle Text]: Last post content field ",
-      lastPostContentField
+      lastPostContentField,
     );
   }
 
@@ -108,12 +108,12 @@ function proccessPost(postToProccess) {
           console.log("[Wungle Text]: Processing paragraph ", p);
         }
 
-        let theTextInTheParagraph = p.textContent;
+        let theTextInTheParagraph = p.innerHTML;
 
         if (development) {
           console.log(
             "[Wungle Text]: The text in the paragraph ",
-            theTextInTheParagraph
+            theTextInTheParagraph,
           );
         }
 
@@ -125,7 +125,7 @@ function proccessPost(postToProccess) {
           if (development) {
             console.log(
               "[Wungle Text]: The decoded text in the paragraph ",
-              decodedText
+              decodedText,
             );
           }
 
@@ -138,11 +138,11 @@ function proccessPost(postToProccess) {
 
           changeWungleTextButtonToShowOriginal();
 
-          p.textContent = `${decodedText}`;
+          p.innerHTML = `${decodedText}`;
         } else {
           changeWungleTextButtonToShowOriginal();
 
-          p.textContent = ``;
+          p.innerHTML = ``;
         }
 
         function changeWungleTextButtonToShowOriginal() {
@@ -157,11 +157,11 @@ function proccessPost(postToProccess) {
               function whenWungleTextButtonIsClickedAgain() {
                 if (development) {
                   console.log(
-                    "[Wungle Text]: Wungle text button clicked again"
+                    "[Wungle Text]: Wungle text button clicked again",
                   );
                 }
 
-                p.textContent = theTextInTheParagraph;
+                p.innerHTML = theTextInTheParagraph;
                 header.querySelector(".wungle-text-button").textContent =
                   "Wungle Text";
 
@@ -169,12 +169,12 @@ function proccessPost(postToProccess) {
                   .querySelector(".wungle-text-button")
                   .removeEventListener(
                     "click",
-                    whenWungleTextButtonIsClickedAgain
+                    whenWungleTextButtonIsClickedAgain,
                   );
                 header
                   .querySelector(".wungle-text-button")
                   .addEventListener("click", whenWungleTextButtonIsClicked);
-              }
+              },
             );
 
           header.querySelector(".wungle-text-button").textContent =
@@ -185,7 +185,7 @@ function proccessPost(postToProccess) {
           "[Wungle Text]: Does the text '",
           theTextInTheParagraph,
           "' contain wungle text?",
-          containsWungleText
+          containsWungleText,
         );
       });
     });
@@ -204,7 +204,7 @@ function proccessPostsContinuously() {
       console.log("[Wungle Text]: Processing post ", posts[i]);
       console.log(
         "[Wungle Text]: Is post already processed ",
-        postsThatWereAlreadyProcessed.includes(posts[i])
+        postsThatWereAlreadyProcessed.includes(posts[i]),
       );
     }
     if (!postsThatWereAlreadyProcessed.includes(posts[i])) {
