@@ -12,4 +12,4 @@ A proof of concept finally exists, using 3y3 it allows you to encode text that w
 
 ## Contribution
 
-If you have any problems or suggestions please create an issue and if you have any improvements to the code fork this repo and make a pull request.
+If you have any problems or suggestions please create an issue and if you have any improvements to the code fork this repo and make a pull request to **the dev branch**.
