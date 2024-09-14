@@ -69,6 +69,7 @@ function proccessPost(postToProccess) {
 
   const header = postToProccess.querySelector("header");
   const postContentFields = postToProccess.querySelectorAll(".GzjsW");
+  const postContentFieldsArray = Array.from(postContentFields);
   const lastPostContentField = postContentFields[postContentFields.length - 1];
 
   if (development) {
@@ -129,97 +130,99 @@ function proccessPost(postToProccess) {
   header
     .querySelector(".wungle-text-button")
     .addEventListener("click", function whenWungleTextButtonIsClicked() {
-      lastPostContentField.querySelectorAll("p").forEach((p) => {
-        if (development) {
-          console.log("[Wungle Text]: Processing paragraph ", p);
-        }
-
-        let theTextInTheParagraph = p.innerHTML;
-
-        if (development) {
-          console.log(
-            "[Wungle Text]: The text in the paragraph ",
-            theTextInTheParagraph
-          );
-        }
-
-        const containsWungleText = detect(theTextInTheParagraph);
-
-        if (containsWungleText) {
-          let decodedText = decode(theTextInTheParagraph);
-
+      postContentFieldsArray.forEach((postContentField) => {
+        postContentField.querySelectorAll("p, span, h1, h2, li, blockquote").forEach((p) => {
+          if (development) {
+            console.log("[Wungle Text]: Processing paragraph ", p);
+          }
+  
+          let theTextInTheParagraph = p.innerHTML;
+  
           if (development) {
             console.log(
-              "[Wungle Text]: The decoded text in the paragraph ",
-              decodedText
+              "[Wungle Text]: The text in the paragraph ",
+              theTextInTheParagraph
             );
           }
-
-          const regex = /{wungle text ends here}/;
-          const match = regex.exec(decodedText);
-
-          if (match) {
-            decodedText = decodedText.slice(0, match.index);
+  
+          const containsWungleText = detect(theTextInTheParagraph);
+  
+          if (containsWungleText) {
+            let decodedText = decode(theTextInTheParagraph);
+  
+            if (development) {
+              console.log(
+                "[Wungle Text]: The decoded text in the paragraph ",
+                decodedText
+              );
+            }
+  
+            const regex = /{wungle text ends here}/;
+            const match = regex.exec(decodedText);
+  
+            if (match) {
+              decodedText = decodedText.slice(0, match.index);
+            }
+  
+            changeWungleTextButtonToShowOriginal();
+  
+            p.innerHTML = `${decodedText}`;
+          } else {
+            changeWungleTextButtonToShowOriginal();
+  
+            if (development) {
+              console.log(
+                "[Wungle Text]: The paragraph to be made empty since theres no wungle text ",
+                p.innerHTML
+              );
+            }
+  
+            p.innerHTML = ``;
           }
-
-          changeWungleTextButtonToShowOriginal();
-
-          p.innerHTML = `${decodedText}`;
-        } else {
-          changeWungleTextButtonToShowOriginal();
-
-          if (development) {
-            console.log(
-              "[Wungle Text]: The paragraph to be made empty since theres no wungle text ",
-              p.innerHTML
-            );
-          }
-
-          p.innerHTML = ``;
-        }
-
-        function changeWungleTextButtonToShowOriginal() {
-          header
-            .querySelector(".wungle-text-button")
-            .removeEventListener("click", whenWungleTextButtonIsClicked);
-
-          header
-            .querySelector(".wungle-text-button")
-            .addEventListener(
-              "click",
-              function whenWungleTextButtonIsClickedAgain() {
-                if (development) {
-                  console.log(
-                    "[Wungle Text]: Wungle text button clicked again"
-                  );
+  
+          function changeWungleTextButtonToShowOriginal() {
+            header
+              .querySelector(".wungle-text-button")
+              .removeEventListener("click", whenWungleTextButtonIsClicked);
+  
+            header
+              .querySelector(".wungle-text-button")
+              .addEventListener(
+                "click",
+                function whenWungleTextButtonIsClickedAgain() {
+                  if (development) {
+                    console.log(
+                      "[Wungle Text]: Wungle text button clicked again"
+                    );
+                  }
+  
+                  p.innerHTML = theTextInTheParagraph;
+                  header.querySelector(".wungle-text-button").textContent =
+                    "Wungle Text";
+  
+                  header
+                    .querySelector(".wungle-text-button")
+                    .removeEventListener(
+                      "click",
+                      whenWungleTextButtonIsClickedAgain
+                    );
+                  header
+                    .querySelector(".wungle-text-button")
+                    .addEventListener("click", whenWungleTextButtonIsClicked);
                 }
-
-                p.innerHTML = theTextInTheParagraph;
-                header.querySelector(".wungle-text-button").textContent =
-                  "Wungle Text";
-
-                header
-                  .querySelector(".wungle-text-button")
-                  .removeEventListener(
-                    "click",
-                    whenWungleTextButtonIsClickedAgain
-                  );
-                header
-                  .querySelector(".wungle-text-button")
-                  .addEventListener("click", whenWungleTextButtonIsClicked);
-              }
-            );
-
-          header.querySelector(".wungle-text-button").textContent =
-            "Show Original";
-        }
-
-        console.log(
-          "[Wungle Text]: Does the text '",
-          theTextInTheParagraph,
-          "' contain wungle text?",
-          containsWungleText
-        );
+              );
+  
+            header.querySelector(".wungle-text-button").textContent =
+              "Show Original";
+          }
+  
+          console.log(
+            "[Wungle Text]: Does the text '",
+            theTextInTheParagraph,
+            "' contain wungle text?",
+            containsWungleText
+          );
+        });
       });
     });
 }
