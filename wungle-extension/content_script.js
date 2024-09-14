@@ -142,6 +142,13 @@ function proccessPost(postToProccess) {
         } else {
           changeWungleTextButtonToShowOriginal();
 
+          if (development) {
+            console.log(
+              "[Wungle Text]: The paragraph to be made empty since theres no wungle text ",
+              p.innerHTML,
+            );
+          }
+
           p.innerHTML = ``;
         }
 
