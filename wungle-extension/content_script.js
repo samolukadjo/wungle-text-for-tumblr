@@ -51,180 +51,12 @@ function main() {
 // This function runs the callback function once the page is loaded
 function runOnLoaded(callback) {
   if (document.readyState == "complete") {
-    callback();
+    callback;
   } else {
     document.addEventListener("load", () => {
-      callback();
+      callback;
     });
   }
-}
-
-// This function proccesses a single post by adding to it the functionalitty needed to see the wungle text
-// It also adds a button and attaches an event listener to the button which executes a function
-//that curentlly shows an alert but which will find and show the wungle text
-function proccessPost(postToProccess) {
-  if (development) {
-    console.log("[Wungle Text]: Processing post ", postToProccess);
-  }
-
-  const header = postToProccess.querySelector("header");
-  const postContentFields = postToProccess.querySelectorAll(".GzjsW");
-  const postContentFieldsArray = Array.from(postContentFields);
-  const lastPostContentField = postContentFields[postContentFields.length - 1];
-
-  if (development) {
-    console.log(
-      "[Wungle Text]: Last post content field ",
-      lastPostContentField
-    );
-  }
-
-  /*
-  header.innerHTML += `<button class="wungle-text-button" style="margin-left: 0.2rem; border: 1px solid ${
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "white"
-      : "black"
-  }; height: 4rem; padding: 0.1rem 0.5rem 0.1rem 0.5rem; border-radius: 0.5rem; min-width: 6rem; line-height: 1.2rem; white-space: normal; word-wrap: break-word; background-color: ${
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "#333"
-      : "white"
-  }; color: ${
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "white"
-      : "black"
-  };">Wungle Text</button>`;
-*/
-
-  // Create the button element to be added to the header
-  const wungleTextButton = document.createElement("button");
-  wungleTextButton.className = "wungle-text-button";
-  wungleTextButton.style =
-    "margin-left: 0.2rem; border: 1px solid " +
-    (window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "white"
-      : "black") +
-    "; height: 4rem; padding: 0.1rem 0.5rem 0.1rem 0.5rem; border-radius: 0.5rem; min-width: 6rem; line-height: 1.2rem; white-space: normal; word-wrap: break-word; background-color: " +
-    (window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "#333"
-      : "white") +
-    "; color: " +
-    (window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "white"
-      : "black") +
-    ";";
-  wungleTextButton.textContent = "Wungle Text";
-
-  // Add the button to the header
-  header.appendChild(wungleTextButton);
-
-  if (development) {
-    console.log("[Wungle Text]: Wungle Text button ", wungleTextButton);
-  }
-
-  header
-    .querySelector(".wungle-text-button")
-    .addEventListener("click", function whenWungleTextButtonIsClicked() {
-      postContentFieldsArray.forEach((postContentField) => {
-        postContentField.querySelectorAll("p, span, h1, h2, li, blockquote").forEach((p) => {
-          if (development) {
-            console.log("[Wungle Text]: Processing paragraph ", p);
-          }
-  
-          let theTextInTheParagraph = p.innerHTML;
-  
-          if (development) {
-            console.log(
-              "[Wungle Text]: The text in the paragraph ",
-              theTextInTheParagraph
-            );
-          }
-  
-          const containsWungleText = detect(theTextInTheParagraph);
-  
-          if (containsWungleText) {
-            let decodedText = decode(theTextInTheParagraph);
-  
-            if (development) {
-              console.log(
-                "[Wungle Text]: The decoded text in the paragraph ",
-                decodedText
-              );
-            }
-  
-            const regex = /{wungle text ends here}/;
-            const match = regex.exec(decodedText);
-  
-            if (match) {
-              decodedText = decodedText.slice(0, match.index);
-            }
-  
-            changeWungleTextButtonToShowOriginal();
-  
-            p.innerHTML = `${decodedText}`;
-          } else {
-            changeWungleTextButtonToShowOriginal();
-  
-            if (development) {
-              console.log(
-                "[Wungle Text]: The paragraph to be made empty since theres no wungle text ",
-                p.innerHTML
-              );
-            }
-  
-            p.innerHTML = ``;
-          }
-  
-          function changeWungleTextButtonToShowOriginal() {
-            header
-              .querySelector(".wungle-text-button")
-              .removeEventListener("click", whenWungleTextButtonIsClicked);
-  
-            header
-              .querySelector(".wungle-text-button")
-              .addEventListener(
-                "click",
-                function whenWungleTextButtonIsClickedAgain() {
-                  if (development) {
-                    console.log(
-                      "[Wungle Text]: Wungle text button clicked again"
-                    );
-                  }
-  
-                  p.innerHTML = theTextInTheParagraph;
-                  header.querySelector(".wungle-text-button").textContent =
-                    "Wungle Text";
-  
-                  header
-                    .querySelector(".wungle-text-button")
-                    .removeEventListener(
-                      "click",
-                      whenWungleTextButtonIsClickedAgain
-                    );
-                  header
-                    .querySelector(".wungle-text-button")
-                    .addEventListener("click", whenWungleTextButtonIsClicked);
-                }
-              );
-  
-            header.querySelector(".wungle-text-button").textContent =
-              "Show Original";
-          }
-  
-          console.log(
-            "[Wungle Text]: Does the text '",
-            theTextInTheParagraph,
-            "' contain wungle text?",
-            containsWungleText
-          );
-        });
-      });
-    });
 }
 
 // Check for new posts every certain time interval and proccess them
@@ -249,5 +81,165 @@ function proccessPostsContinuously() {
     }
   }
 
-  setTimeout(proccessPostsContinuously, 1000);
+  setTimeout(proccessPostsContinuously, 2000);
+}
+
+// This function proccesses a single post by adding to it the functionalitty needed to see the wungle text
+function proccessPost(postToProccess) {
+  if (development) {
+    console.log("[Wungle Text]: Processing post ", postToProccess);
+  }
+
+  const header = postToProccess.querySelector("header");
+  const wungleTextButton = createAWungleTextButtonAndReturnIt();
+
+  /*  const postContentFields = postToProccess.querySelectorAll(
+    ".GzjsW" /, .k31gt"/
+  );
+  const postContentFieldsArray = Array.from(postContentFields);
+  const lastPostContentField = postContentFields[postContentFields.length - 1]; */
+
+  // Add the button to the header
+  header.appendChild(wungleTextButton);
+
+  if (development) {
+    console.log("[Wungle Text]: Wungle Text button ", wungleTextButton);
+  }
+
+  const theApendedWungleTextButton = header.querySelector(
+    ".wungle-text-button"
+  );
+
+  theApendedWungleTextButton.addEventListener("click", () => {
+    switchWungleTextState(theApendedWungleTextButton, postToProccess);
+  });
+}
+
+// Create the button element to be added to the header
+function createAWungleTextButtonAndReturnIt() {
+  const wungleTextButton = document.createElement("button");
+  wungleTextButton.className = "wungle-text-button";
+  wungleTextButton.style =
+    "margin-left: 0.2rem; border: 1px solid " +
+    (window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "white"
+      : "black") +
+    "; height: 4rem; padding: 0.1rem 0.5rem 0.1rem 0.5rem; border-radius: 0.5rem; min-width: 6rem; line-height: 1.2rem; white-space: normal; word-wrap: break-word; background-color: " +
+    (window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "#333"
+      : "white") +
+    "; color: " +
+    (window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "white"
+      : "black") +
+    ";";
+  wungleTextButton.textContent = "Wungle Text";
+  return wungleTextButton;
+}
+
+function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
+  const postContentFields = postToProccess.querySelectorAll(
+    ".GzjsW, .IxFyd:not(:has(>.GzjsW))"
+  );
+  const postContentFieldsArray = Array.from(postContentFields);
+
+  if (development) {
+    console.log(
+      "[Wungle Text]: Array of post content fields ",
+      postContentFieldsArray
+    );
+  }
+
+  if (theApendedWungleTextButton.textContent == "Wungle Text") {
+    postContentFieldsArray.forEach((postContentField) => {
+      const contentElements = Array.from(
+        postContentField.querySelectorAll("p, h1, h2, li, blockquote")
+      );
+
+      if (development) {
+        console.log("[Wungle Text]: Content elements: ", contentElements);
+      }
+
+      contentElements.forEach((p) => {
+        if (development) {
+          console.log("[Wungle Text]: Processing paragraph ", p);
+        }
+
+        const theOriginalTextInTheParagraph = p.innerHTML;
+
+        p.setAttribute("data-original", theOriginalTextInTheParagraph);
+
+        if (development) {
+          console.log(
+            "[Wungle Text]: The text in the paragraph ",
+            theOriginalTextInTheParagraph
+          );
+        }
+
+        const containsWungleText = detect(p.innerHTML);
+
+        console.log(
+          "[Wungle Text]: Does the text '",
+          p.innerHTML,
+          "' contain wungle text?",
+          containsWungleText
+        );
+
+        if (containsWungleText) {
+          let decodedText = decode(p.innerHTML);
+
+          if (development) {
+            console.log(
+              "[Wungle Text]: The decoded text in the paragraph ",
+              decodedText
+            );
+          }
+
+          const regex = /{wungle text ends here}/;
+          const match = regex.exec(decodedText);
+
+          if (match) {
+            decodedText = decodedText.slice(0, match.index);
+          }
+
+          p.innerHTML = decodedText;
+        } else {
+          if (development) {
+            console.log(
+              "[Wungle Text]: The paragraph to be made empty since theres no wungle text ",
+              p.innerHTML
+            );
+          }
+
+          p.innerHTML = ``;
+        }
+      });
+    });
+
+    theApendedWungleTextButton.textContent = "Show Original";
+  } else if (theApendedWungleTextButton.textContent == "Show Original") {
+    postContentFieldsArray.forEach((postContentField) => {
+      const contentElements = Array.from(
+        postContentField.querySelectorAll("p, h1, h2, li, blockquote")
+      );
+
+      if (development) {
+        console.log("[Wungle Text]: Content elements: ", contentElements);
+      }
+
+      contentElements.forEach((p) => {
+        if (development) {
+          console.log("[Wungle Text]: Processing paragraph ", p);
+        }
+
+        const theOriginalTextInTheParagraph = p.getAttribute("data-original");
+        p.innerHTML = theOriginalTextInTheParagraph;
+      });
+
+      theApendedWungleTextButton.textContent = "Wungle Text";
+    });
+  }
 }
