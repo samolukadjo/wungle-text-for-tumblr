@@ -93,12 +93,6 @@ function proccessPost(postToProccess) {
   const header = postToProccess.querySelector("header");
   const wungleTextButton = createAWungleTextButtonAndReturnIt();
 
-  /*  const postContentFields = postToProccess.querySelectorAll(
-    ".GzjsW" /, .k31gt"/
-  );
-  const postContentFieldsArray = Array.from(postContentFields);
-  const lastPostContentField = postContentFields[postContentFields.length - 1]; */
-
   // Add the button to the header
   header.appendChild(wungleTextButton);
 
