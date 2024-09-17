@@ -120,7 +120,7 @@ function postHasSomethingThatCouldBeWungled(postToProccess) {
 
   if (development) {
     console.log(
-      "[Wungle Text]: The lenght of the array of wunglable content is ",
+      "[Wungle Text]: The lengtht of the array of wunglable content is ",
       wunglablePostContentArray.length
     );
   }
