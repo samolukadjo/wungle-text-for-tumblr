@@ -16,7 +16,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "wungle.text@lukadjo.dev",
-      "strict_min_version": "42.0"
+      "strict_min_version": "58.0"
     }
   },
 
