@@ -90,23 +90,48 @@ function proccessPost(postToProccess) {
     console.log("[Wungle Text]: Processing post ", postToProccess);
   }
 
-  const header = postToProccess.querySelector("header");
-  const wungleTextButton = createAWungleTextButtonAndReturnIt();
+  if (postHasSomethingThatCouldBeWungled(postToProccess)) {
+    const header = postToProccess.querySelector("header");
+    const wungleTextButton = createAWungleTextButtonAndReturnIt();
 
-  // Add the button to the header
-  header.appendChild(wungleTextButton);
+    // Add the button to the header
+    header.appendChild(wungleTextButton);
+
+    if (development) {
+      console.log("[Wungle Text]: Wungle Text button ", wungleTextButton);
+    }
+
+    const theApendedWungleTextButton = header.querySelector(
+      ".wungle-text-button"
+    );
+
+    theApendedWungleTextButton.addEventListener("click", () => {
+      switchWungleTextState(theApendedWungleTextButton, postToProccess);
+    });
+  }
+}
+
+// Check if the post has nothing that could be wungled
+function postHasSomethingThatCouldBeWungled(postToProccess) {
+  const wunglablePostContent = postToProccess.querySelectorAll(
+    "p, h1, h2, li, blockquote"
+  );
+  const wunglablePostContentArray = Array.from(wunglablePostContent);
 
   if (development) {
-    console.log("[Wungle Text]: Wungle Text button ", wungleTextButton);
+    console.log(
+      "[Wungle Text]: The lenght of the array of wunglable content is ",
+      wunglablePostContentArray.length
+    );
   }
 
-  const theApendedWungleTextButton = header.querySelector(
-    ".wungle-text-button"
-  );
-
-  theApendedWungleTextButton.addEventListener("click", () => {
-    switchWungleTextState(theApendedWungleTextButton, postToProccess);
-  });
+  if (wunglablePostContentArray.length == 0) {
+    if (development) {
+      console.log("[Wungle Text]: The post has nothing that could be wungled");
+    }
+    return false;
+  }
+  return true;
 }
 
 // Create the button element to be added to the header
