@@ -10,7 +10,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.tumblr.com/*"],
-      "js": ["3y3/3y3.js", "content_script.js"]
+      "js": ["lib/3y3.js", "content_script.js"]
     }
   ],
   "browser_action": {
