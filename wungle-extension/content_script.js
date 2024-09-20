@@ -93,6 +93,13 @@ function proccessPost(postToProccess) {
   if (postHasSomethingThatCouldBeWungled(postToProccess)) {
     const header = postToProccess.querySelector("header");
     const wungleTextButton = createAWungleTextButtonAndReturnIt();
+    if (detect(postToProccess.innerHTML)) {
+      if (wungleTextButton.style.backgroundColor == "white") {
+        wungleTextButton.style.backgroundColor = "#1FEE1F";
+      } else {
+        wungleTextButton.style.backgroundColor = "green";
+      }
+    }
 
     // Add the button to the header
     header.appendChild(wungleTextButton);
@@ -120,7 +127,7 @@ function postHasSomethingThatCouldBeWungled(postToProccess) {
 
   if (development) {
     console.log(
-      "[Wungle Text]: The lengtht of the array of wunglable content is ",
+      "[Wungle Text]: The length of the array of wunglable content is ",
       wunglablePostContentArray.length
     );
   }
