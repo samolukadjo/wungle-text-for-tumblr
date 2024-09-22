@@ -10,6 +10,8 @@ This extension is available on the [Firefox Add-on Store](https://addons.mozilla
 
 A proof of concept finally exists, using 3y3 it allows you to encode text that when added to the start of a paragraph in a tumblr post allows it to be read as wungle text.
 
+Making the posts flip over, etc., will also happen at some point.
+
 ## Contribution
 
 If you have any problems or suggestions please create an issue and if you have any improvements to the code fork this repo and make a pull request to **the dev branch**.
