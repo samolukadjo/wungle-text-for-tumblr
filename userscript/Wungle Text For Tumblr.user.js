@@ -1,13 +1,12 @@
 // ==UserScript==
 // @name         Wungle Text For Tumblr
 // @namespace    lukadjo
-// @version      2.0.1
+// @version      2.1.0
 // @description  Hide text in plain sight, and find the text hidden by others.
 // @author       Lukadjo
 // @match        *://*.tumblr.com/*
 // @icon         https://raw.githubusercontent.com/samolukadjo/wungle-text-for-tumblr/main/icons/favicon.ico
 // @homepage     https://samolukadjo.github.io/wungle-text-for-tumblr/
-// @resource     https://raw.githubusercontent.com/samolukadjo/wungle-text-for-tumblr/refs/heads/main/wungle-extension/lib/3y3.js
 // @grant        none
 // ==/UserScript==
 
@@ -148,6 +147,13 @@ function proccessPost(postToProccess) {
   if (postHasSomethingThatCouldBeWungled(postToProccess)) {
     const header = postToProccess.querySelector("header");
     const wungleTextButton = createAWungleTextButtonAndReturnIt();
+    if (detect(postToProccess.innerHTML)) {
+      if (wungleTextButton.style.backgroundColor == "white") {
+        wungleTextButton.style.backgroundColor = "#1FEE1F";
+      } else {
+        wungleTextButton.style.backgroundColor = "green";
+      }
+    }
 
     // Add the button to the header
     header.appendChild(wungleTextButton);
@@ -175,7 +181,7 @@ function postHasSomethingThatCouldBeWungled(postToProccess) {
 
   if (development) {
     console.log(
-      "[Wungle Text]: The lengtht of the array of wunglable content is ",
+      "[Wungle Text]: The length of the array of wunglable content is ",
       wunglablePostContentArray.length
     );
   }
