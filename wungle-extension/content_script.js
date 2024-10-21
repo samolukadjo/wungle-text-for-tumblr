@@ -5,7 +5,7 @@ const development = true;
 if (Array.prototype.equals) {
   if (development) {
     console.warn(
-      "[Wungle Text]: Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code."
+      "[Wungle Text]: Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.",
     );
   }
 }
@@ -41,7 +41,7 @@ main();
 function main() {
   if (development) {
     console.log(
-      "[Wungle Text]: Hello from the content_script.js of the Wungle text extension!"
+      "[Wungle Text]: Hello from the content_script.js of the Wungle text extension!",
     );
   }
 
@@ -72,7 +72,7 @@ function proccessPostsContinuously() {
       console.log("[Wungle Text]: Processing post ", posts[i]);
       console.log(
         "[Wungle Text]: Is post already processed ",
-        postsThatWereAlreadyProcessed.includes(posts[i])
+        postsThatWereAlreadyProcessed.includes(posts[i]),
       );
     }
     if (!postsThatWereAlreadyProcessed.includes(posts[i])) {
@@ -109,7 +109,7 @@ function proccessPost(postToProccess) {
     }
 
     const theApendedWungleTextButton = header.querySelector(
-      ".wungle-text-button"
+      ".wungle-text-button",
     );
 
     theApendedWungleTextButton.addEventListener("click", () => {
@@ -121,14 +121,14 @@ function proccessPost(postToProccess) {
 // Check if the post has nothing that could be wungled
 function postHasSomethingThatCouldBeWungled(postToProccess) {
   const wunglablePostContent = postToProccess.querySelectorAll(
-    "p, h1, h2, li, blockquote"
+    "p, h1, h2, li, blockquote",
   );
   const wunglablePostContentArray = Array.from(wunglablePostContent);
 
   if (development) {
     console.log(
       "[Wungle Text]: The length of the array of wunglable content is ",
-      wunglablePostContentArray.length
+      wunglablePostContentArray.length,
     );
   }
 
@@ -168,21 +168,21 @@ function createAWungleTextButtonAndReturnIt() {
 
 function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
   const postContentFields = postToProccess.querySelectorAll(
-    ".GzjsW, .IxFyd:not(:has(>.GzjsW))"
+    ".GzjsW, .IxFyd:not(:has(>.GzjsW))",
   );
   const postContentFieldsArray = Array.from(postContentFields);
 
   if (development) {
     console.log(
       "[Wungle Text]: Array of post content fields ",
-      postContentFieldsArray
+      postContentFieldsArray,
     );
   }
 
   if (theApendedWungleTextButton.textContent == "Wungle Text") {
     postContentFieldsArray.forEach((postContentField) => {
       const contentElements = Array.from(
-        postContentField.querySelectorAll("p, h1, h2, li, blockquote")
+        postContentField.querySelectorAll("p, h1, h2, li, blockquote"),
       );
 
       if (development) {
@@ -201,7 +201,7 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
         if (development) {
           console.log(
             "[Wungle Text]: The text in the paragraph ",
-            theOriginalTextInTheParagraph
+            theOriginalTextInTheParagraph,
           );
         }
 
@@ -211,7 +211,7 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
           "[Wungle Text]: Does the text '",
           p.innerHTML,
           "' contain wungle text?",
-          containsWungleText
+          containsWungleText,
         );
 
         if (containsWungleText) {
@@ -220,7 +220,7 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
           if (development) {
             console.log(
               "[Wungle Text]: The decoded text in the paragraph ",
-              decodedText
+              decodedText,
             );
           }
 
@@ -236,7 +236,7 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
           if (development) {
             console.log(
               "[Wungle Text]: The paragraph to be made empty since theres no wungle text ",
-              p.innerHTML
+              p.innerHTML,
             );
           }
 
@@ -249,7 +249,7 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
   } else if (theApendedWungleTextButton.textContent == "Show Original") {
     postContentFieldsArray.forEach((postContentField) => {
       const contentElements = Array.from(
-        postContentField.querySelectorAll("p, h1, h2, li, blockquote")
+        postContentField.querySelectorAll("p, h1, h2, li, blockquote"),
       );
 
       if (development) {
