@@ -5,7 +5,7 @@ const development = true;
 if (Array.prototype.equals) {
   if (development) {
     console.warn(
-      "[Wungle Text]: Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.",
+      "[Wungle Text]: Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code."
     );
   }
 }
@@ -41,7 +41,7 @@ main();
 function main() {
   if (development) {
     console.log(
-      "[Wungle Text]: Hello from the content_script.js of the Wungle text extension!",
+      "[Wungle Text]: Hello from the content_script.js of the Wungle text extension!"
     );
   }
 
@@ -61,9 +61,19 @@ function runOnLoaded(callback) {
 
 // Check for new posts every certain time interval and proccess them
 function proccessPostsContinuously() {
-  const posts = Array.from(document.querySelectorAll(".zAlrA article"));
+  const postsContainers = Array.from(document.querySelectorAll(".zAlrA"));
+  let posts = [];
+
+  postsContainers.forEach((postContainer) => {
+    posts = posts.concat(Array.from(postContainer.querySelectorAll("article")));
+  });
+  Array.from(document.querySelectorAll(".zAlrA article"));
 
   if (development) {
+    console.log(
+      "[Wungle Text]: Posts containers detected ",
+      document.querySelectorAll(".zAlrA")
+    );
     console.log("[Wungle Text]: Posts detected ", posts);
   }
 
@@ -72,7 +82,7 @@ function proccessPostsContinuously() {
       console.log("[Wungle Text]: Processing post ", posts[i]);
       console.log(
         "[Wungle Text]: Is post already processed ",
-        postsThatWereAlreadyProcessed.includes(posts[i]),
+        postsThatWereAlreadyProcessed.includes(posts[i])
       );
     }
     if (!postsThatWereAlreadyProcessed.includes(posts[i])) {
@@ -99,6 +109,8 @@ function proccessPost(postToProccess) {
       } else {
         wungleTextButton.style.backgroundColor = "green";
       }
+
+      wungleTextButton.textContent += " (Detected)";
     }
 
     // Add the button to the header
@@ -109,7 +121,7 @@ function proccessPost(postToProccess) {
     }
 
     const theApendedWungleTextButton = header.querySelector(
-      ".wungle-text-button",
+      ".wungle-text-button"
     );
 
     theApendedWungleTextButton.addEventListener("click", () => {
@@ -121,14 +133,14 @@ function proccessPost(postToProccess) {
 // Check if the post has nothing that could be wungled
 function postHasSomethingThatCouldBeWungled(postToProccess) {
   const wunglablePostContent = postToProccess.querySelectorAll(
-    "p, h1, h2, li, blockquote",
+    "p, h1, h2, li, blockquote"
   );
   const wunglablePostContentArray = Array.from(wunglablePostContent);
 
   if (development) {
     console.log(
       "[Wungle Text]: The length of the array of wunglable content is ",
-      wunglablePostContentArray.length,
+      wunglablePostContentArray.length
     );
   }
 
@@ -168,21 +180,24 @@ function createAWungleTextButtonAndReturnIt() {
 
 function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
   const postContentFields = postToProccess.querySelectorAll(
-    ".GzjsW, .IxFyd:not(:has(>.GzjsW))",
+    ".GzjsW, .IxFyd:not(:has(>.GzjsW))"
   );
   const postContentFieldsArray = Array.from(postContentFields);
 
   if (development) {
     console.log(
       "[Wungle Text]: Array of post content fields ",
-      postContentFieldsArray,
+      postContentFieldsArray
     );
   }
 
-  if (theApendedWungleTextButton.textContent == "Wungle Text") {
+  if (
+    theApendedWungleTextButton.textContent == "Wungle Text" ||
+    theApendedWungleTextButton.textContent == "Wungle Text (Detected)"
+  ) {
     postContentFieldsArray.forEach((postContentField) => {
       const contentElements = Array.from(
-        postContentField.querySelectorAll("p, h1, h2, li, blockquote"),
+        postContentField.querySelectorAll("p, h1, h2, li, blockquote")
       );
 
       if (development) {
@@ -201,7 +216,7 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
         if (development) {
           console.log(
             "[Wungle Text]: The text in the paragraph ",
-            theOriginalTextInTheParagraph,
+            theOriginalTextInTheParagraph
           );
         }
 
@@ -211,7 +226,7 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
           "[Wungle Text]: Does the text '",
           p.innerHTML,
           "' contain wungle text?",
-          containsWungleText,
+          containsWungleText
         );
 
         if (containsWungleText) {
@@ -220,7 +235,7 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
           if (development) {
             console.log(
               "[Wungle Text]: The decoded text in the paragraph ",
-              decodedText,
+              decodedText
             );
           }
 
@@ -236,7 +251,7 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
           if (development) {
             console.log(
               "[Wungle Text]: The paragraph to be made empty since theres no wungle text ",
-              p.innerHTML,
+              p.innerHTML
             );
           }
 
@@ -245,11 +260,17 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
       });
     });
 
-    theApendedWungleTextButton.textContent = "Show Original";
-  } else if (theApendedWungleTextButton.textContent == "Show Original") {
+    if (theApendedWungleTextButton.textContent == "Wungle Text") {
+      theApendedWungleTextButton.textContent = "Show Original";
+    } else if (
+      theApendedWungleTextButton.textContent == "Wungle Text (Detected)"
+    ) {
+      theApendedWungleTextButton.textContent = "Show Original (Detected)";
+    }
+  } else if (theApendedWungleTextButton.textContent == "Show Original" || theApendedWungleTextButton.textContent == "Show Original (Detected)") {
     postContentFieldsArray.forEach((postContentField) => {
       const contentElements = Array.from(
-        postContentField.querySelectorAll("p, h1, h2, li, blockquote"),
+        postContentField.querySelectorAll("p, h1, h2, li, blockquote")
       );
 
       if (development) {
@@ -264,8 +285,11 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
         const theOriginalTextInTheParagraph = p.getAttribute("data-original");
         p.innerHTML = theOriginalTextInTheParagraph;
       });
-
-      theApendedWungleTextButton.textContent = "Wungle Text";
+      if (theApendedWungleTextButton.textContent == "Show Original") {
+        theApendedWungleTextButton.textContent = "Wungle Text";
+      } else if (theApendedWungleTextButton.textContent == "Show Original (Detected)") {
+        theApendedWungleTextButton.textContent = "Wungle Text (Detected)";
+      }
     });
   }
 }
