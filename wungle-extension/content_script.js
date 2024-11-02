@@ -61,9 +61,19 @@ function runOnLoaded(callback) {
 
 // Check for new posts every certain time interval and proccess them
 function proccessPostsContinuously() {
-  const posts = Array.from(document.querySelectorAll(".zAlrA article"));
+  const postsContainers = Array.from(document.querySelectorAll(".zAlrA"));
+  let posts = [];
+
+  postsContainers.forEach((postContainer) => {
+    posts = posts.concat(Array.from(postContainer.querySelectorAll("article")));
+  });
+  Array.from(document.querySelectorAll(".zAlrA article"));
 
   if (development) {
+    console.log(
+      "[Wungle Text]: Posts containers detected ",
+      document.querySelectorAll(".zAlrA")
+    );
     console.log("[Wungle Text]: Posts detected ", posts);
   }
 
@@ -99,6 +109,8 @@ function proccessPost(postToProccess) {
       } else {
         wungleTextButton.style.backgroundColor = "green";
       }
+
+      wungleTextButton.textContent += " (Detected)";
     }
 
     // Add the button to the header
@@ -179,7 +191,10 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
     );
   }
 
-  if (theApendedWungleTextButton.textContent == "Wungle Text") {
+  if (
+    theApendedWungleTextButton.textContent == "Wungle Text" ||
+    theApendedWungleTextButton.textContent == "Wungle Text (Detected)"
+  ) {
     postContentFieldsArray.forEach((postContentField) => {
       const contentElements = Array.from(
         postContentField.querySelectorAll("p, h1, h2, li, blockquote")
@@ -245,8 +260,14 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
       });
     });
 
-    theApendedWungleTextButton.textContent = "Show Original";
-  } else if (theApendedWungleTextButton.textContent == "Show Original") {
+    if (theApendedWungleTextButton.textContent == "Wungle Text") {
+      theApendedWungleTextButton.textContent = "Show Original";
+    } else if (
+      theApendedWungleTextButton.textContent == "Wungle Text (Detected)"
+    ) {
+      theApendedWungleTextButton.textContent = "Show Original (Detected)";
+    }
+  } else if (theApendedWungleTextButton.textContent == "Show Original" || theApendedWungleTextButton.textContent == "Show Original (Detected)") {
     postContentFieldsArray.forEach((postContentField) => {
       const contentElements = Array.from(
         postContentField.querySelectorAll("p, h1, h2, li, blockquote")
@@ -264,8 +285,11 @@ function switchWungleTextState(theApendedWungleTextButton, postToProccess) {
         const theOriginalTextInTheParagraph = p.getAttribute("data-original");
         p.innerHTML = theOriginalTextInTheParagraph;
       });
-
-      theApendedWungleTextButton.textContent = "Wungle Text";
+      if (theApendedWungleTextButton.textContent == "Show Original") {
+        theApendedWungleTextButton.textContent = "Wungle Text";
+      } else if (theApendedWungleTextButton.textContent == "Show Original (Detected)") {
+        theApendedWungleTextButton.textContent = "Wungle Text (Detected)";
+      }
     });
   }
 }
