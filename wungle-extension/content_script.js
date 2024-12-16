@@ -61,7 +61,7 @@ function runOnLoaded(callback) {
 
 // Check for new posts every certain time interval and proccess them
 function proccessPostsContinuously() {
-  const postsContainers = Array.from(document.querySelectorAll(".zAlrA"));
+  const postsContainers = Array.from(document.querySelectorAll(".zAlrA, .FtjPK"));
   let posts = [];
 
   postsContainers.forEach((postContainer) => {
@@ -72,7 +72,7 @@ function proccessPostsContinuously() {
   if (development) {
     console.log(
       "[Wungle Text]: Posts containers detected ",
-      document.querySelectorAll(".zAlrA")
+      document.querySelectorAll(".zAlrA, .FtjPK")
     );
     console.log("[Wungle Text]: Posts detected ", posts);
   }
