@@ -21,5 +21,10 @@
     "default_popup": "browserAction/index.html",
     "default_title": "Wungle Text for Tumblr"
   },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{12641c0f-f921-42a0-9c70-05dd379bd1f9}"
+    }
+  },
   "permissions": ["clipboardWrite", "storage"]
 }
