@@ -123,7 +123,7 @@ function proccessPost(postToProccess) {
     header.style.gap = "0.7rem";
     header.style.alignItems = "end";
 
-    topBar.style.maxWidth = "390px";
+    topBar.style.maxWidth = "380px";
 
     // Add the button to the header
     header.appendChild(wungleTextButton);
