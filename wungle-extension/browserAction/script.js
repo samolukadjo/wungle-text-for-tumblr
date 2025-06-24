@@ -13,9 +13,9 @@ const development = true;
 
 button.addEventListener("click", () => {
   const text = input.value;
-  const encodedText = encode(text + "{wungle text ends here}");
+  const encodedText = encode(text + "{{wungle text ends here9236}}");
   navigator.clipboard.writeText(encodedText);
-  result.textContent = `The encoded text has been copied to your clipboard! Paste it at the start of a paragraph to hide wungle text in that paragraph. You can still write stuff in that paragraph, the invisible wungle characters just have to be at the begining of the block of content, this means that it can inserted into asks, headings, lists etc.`;
+  result.textContent = `The encoded text has been copied to your clipboard! Paste it at the start of a paragraph to hide wungle text in that paragraph. You can still write stuff in that paragraph, the invisible wungle characters just have to be at the beginning of the block of content, this means that it can inserted into asks, headings, lists etc.`;
   if (development) {
     console.log("[Wungle Text]: Encoded text ", encodedText);
   }
